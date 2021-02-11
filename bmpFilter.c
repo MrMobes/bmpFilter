@@ -91,10 +91,10 @@ void parseHeaderAndApplyFilter(unsigned char* bmpFileAsBytes, int isGrayscale) {
   int height = 0;
   unsigned char* pixelArray = NULL;
 
-  printf("TODO: set offsetFirstBytePixelArray\n");
-  printf("TODO: set width\n");
-  printf("TODO: set height\n");
-  printf("TODO: set the pixelArray to the start of the pixel array\n");
+  offsetFirstBytePixelArray = *(bmpFileAsBytes+10);
+  width = *(bmpFileAsBytes+18);
+  height = *(bmpFileAsBytes+22);
+  pixelArray = bmpFileAsBytes+10;
 
 #ifdef DEBUG
   printf("offsetFirstBytePixelArray = %u\n", offsetFirstBytePixelArray);
