@@ -68,9 +68,7 @@ unsigned char getAverageIntensity(unsigned char blue, unsigned char green, unsig
 
 void applyGrayscaleToPixel(unsigned char* pixel) {
     int avg = getAverageIntensity(*pixel, *(pixel+1), *(pixel+2));
-    *pixel = avg;
-    *(pixel+1) = avg;
-    *(pixel+2) = avg;
+    *pixel = *(pixel+1) = *(pixel+2) = avg;
 }
 
 void applyThresholdToPixel(unsigned char* pixel) {
@@ -78,18 +76,17 @@ void applyThresholdToPixel(unsigned char* pixel) {
     blue = (unsigned char)*(pixel);
     green = (unsigned char)*(pixel+1);
     red = (unsigned char)*(pixel+2);
-    int white = 255;
-    int black = 0;
     int avg = getAverageIntensity(blue, green, red);
     if(avg<128){
+        *pixel = 0;
+        *(pixel+1) = 0;
+        *(pixel+2) = 0;
+    }
+    else{
         *pixel = 255;
         *(pixel+1) = 255;
         *(pixel+2) = 255;
     }
-    else{
-
-    }
-    printf("address of pixel = %p\n", pixel);
 }
 
 void applyFilterToPixel(unsigned char* pixel, int isGrayscale) {
@@ -134,7 +131,7 @@ void parseHeaderAndApplyFilter(unsigned char* bmpFileAsBytes, int isGrayscale) {
   offsetFirstBytePixelArray = *(bmpFileAsBytes+10);
   width = *((int*)(bmpFileAsBytes+18));
   height = *((int*)(bmpFileAsBytes+22));
-  pixelArray = (unsigned char*)&offsetFirstBytePixelArray;
+  pixelArray = bmpFileAsBytes + offsetFirstBytePixelArray;
 
 #ifdef DEBUG
   printf("offsetFirstBytePixelArray = %u\n", offsetFirstBytePixelArray);
